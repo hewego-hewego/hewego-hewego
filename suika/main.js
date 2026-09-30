@@ -13,7 +13,7 @@ const render = Render.create({
     engine,
     // 어디에 그릴것인지 -> body에 생성
     element: document.body,
-    option: {
+    options: {
         wireframes: false,   // 기본값은 true인데 ture일 경우 색 적용이 안됨
         background: '#F7F4C8', //색 변경
         width: 620,
@@ -21,6 +21,5 @@ const render = Render.create({
     },
 });
 
-// 테스트 실행
 Render.run(render);
 Runner.run(engine);
