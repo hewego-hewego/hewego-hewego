@@ -1,3 +1,6 @@
+// fruits.js에 있는 FRUITS 변수를 가져온다.
+import { FRUITS } from "/suika/fruits.js"
+
 // 모듈 불러오기
 var Engine = Matter.Engine,
     Render = Matter.Render,
@@ -33,20 +36,21 @@ const leftwall = Bodies.rectangle(15, 395, 30, 790, {
 
 const rightwall = Bodies.rectangle(605, 395, 30, 790, {
                                 // x중심점, y중심점, x길이, y길이
-isStatic: true, // 고정해주는 기능
-render: { fillStyle: '#E6B143'}
+    isStatic: true, // 고정해주는 기능
+    render: { fillStyle: '#E6B143'}
 })
 
 const ground = Bodies.rectangle(310, 820, 620, 60, {
                             // x중심점, y중심점, x길이, y길이
-isStatic: true, // 고정해주는 기능
-render: { fillStyle: '#E6B143'}
+    isStatic: true, // 고정해주는 기능
+    render: { fillStyle: '#E6B143'}
 })
 
-const topLine = Bodies.rectangle(320, 150, 62, 2, {
+const topLine = Bodies.rectangle(320, 150, 620, 2, {
                                 // x중심점, y중심점, x길이, y길이
-isStatic: true, // 고정해주는 기능
-render: { fillStyle: '#E6B143'}
+    isStatic: true, // 고정해주는 기능
+    isSensor:true, // 충돌판정을 끄고, 충돌 감지만 함
+    render: { fillStyle: '#E6B143'}
 })
 
 // 벽 배치
@@ -54,3 +58,20 @@ World.add(world, [leftwall, rightwall, ground, topLine]);
 
 Render.run(render);
 Runner.run(engine);
+
+// 과일 떨어지는 함수
+function addFruit() {
+    const index = 1;
+    const fruit = FRUITS[index];
+
+    const body = Bodies.circle(300, 50, fruit.radius, {
+        index: index, // 인덱스 값 지정
+        render: {
+            sprite: { texture: `${fruit.name}.png`},
+        }
+    })
+
+    // 월드에 추가
+    World.add(world, body)
+}
+addFruit();
