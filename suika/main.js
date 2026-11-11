@@ -6,7 +6,10 @@ var Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
     Bodies = Matter.Bodies,
-    World = Matter.World;
+    World = Matter.World,
+    // 바디 추가
+    Body = Matter.Body,
+    Events = Matter.Events;
 
 // 엔진 선언
 const engine = Engine.create();
@@ -62,6 +65,8 @@ Runner.run(engine);
 // 현재 과일값을 저장할 수 있는 변수
 let currentBody = null;
 let currentFruit = null;
+// 키 조작을 제어하는 변수 생성
+let disableAction = false;
 
 // 과일 떨어지는 함수
 function addFruit() {
@@ -85,4 +90,68 @@ function addFruit() {
     // 월드에 추가
     World.add(world, body)
 }
+
+// 키보드 입력받기
+window.onkeydown = ( event ) => {
+    if (disableAction)
+        return
+    
+    switch(event.code) {
+        case "KeyA":
+            Body.setPosition(currentBody, {
+                x: currentBody.position.x - 10,
+                y: currentBody.position.y
+            })
+            break;
+        case "KeyD":
+            Body.setPosition(currentBody, {
+                x: currentBody.position.x + 10,
+                y: currentBody.position.y
+            })
+            break;
+        // 과일 떨어뜨리기
+        case "KeyS":
+            currentBody.isSleeping = false;
+            disableAction = true;
+            // 새로운 과일 추가
+
+            setTimeout(() => {
+                // 새로운 과일 추가
+                addFruit();
+                disableAction = false;
+            }, 1000);
+            break;
+    }
+}
+
+// 이벤트 사용
+Events.on(engine, "collisionStart", (event) => {
+    // 코리전 이벤트 발생시 생기는 모든 오브젝트를 비교
+    event.pairs.forEach((collision) => {
+        // 기존 과일의 index를 저장
+        const index = collision.bodyA.index;
+
+        // 같은 과일일 경우
+        if (collision.bodyA.index == collision.bodyB.index) {
+            World.remove(world, [collision.bodyA, collision.bodyB])
+
+            // 저장한 index값에 +1을 더해 새로 제작
+            const newFruit = FRUITS[index + 1];
+            const newBody = Bodies.circle(
+            collision.collision.supports[0].x,
+            collision.collision.supports[0].y,
+            newFruit.radius,
+            {
+                // 과일이 합쳐졌으므로 index값 1 증가
+                index : index + 1,
+                // 렌더링 새로 해주기
+                render : { sprite: { texture: `${newFruit.name}.png`}}
+            }
+        )
+
+        World.add(world, newBody);
+        }
+    })
+})
+
 addFruit();
