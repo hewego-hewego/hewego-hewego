@@ -1,0 +1,47 @@
+
+#centerMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(0, 0, 0);
+
+    display: none;
+    pointer-events: none;
+    transform-origin: center center;
+
+    animation:
+        sizePulse 0.2s ease-in-out infinite alternate,
+        glowColor 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes sizePulse {
+    from {
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        transform: translate(-50%, -50%) scale(3.2);
+    }
+}
+@keyframes glowColor {
+    from {
+        color: #ffffff;
+        text-shadow:
+            0 0 5px #ffffff,
+            0 0 10px #00ffff,
+            0 0 20px #00ffff,
+            0 0 40px #0088ff;
+    }
+
+    to {
+        color: #ffff00;
+        text-shadow:
+            0 0 5px #ffff00,
+            0 0 10px #ffaa00,
+            0 0 20px #ff6600,
+            0 0 40px #ff0000;
+    }
+}

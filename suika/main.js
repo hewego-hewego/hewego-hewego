@@ -73,6 +73,9 @@ let interval = null;
 // DLC 싼데비슷한
 const message = document.getElementById("centerMessage");
 let hideTimer;
+let ssande = false;
+let shakeTime = 0;
+let lastShakeOffset = 0;
 
 // 과일 떨어지는 함수
 function addFruit() {
@@ -111,7 +114,7 @@ window.onkeydown = ( event ) => {
                 if ( currentBody.position.x - currentFruit.radius > 30) {
                     Body.setPosition(currentBody, {
                         x: currentBody.position.x - 1,
-                        y: currentBody.position.y
+                        y: currentBody.position.y,
                     })
                 }
             }, 5);
@@ -124,7 +127,7 @@ window.onkeydown = ( event ) => {
                 if ( currentBody.position.x + currentFruit.radius < 590) {
                     Body.setPosition(currentBody, {
                         x: currentBody.position.x + 1,
-                        y: currentBody.position.y
+                        y: currentBody.position.y,
                     })
                 }
             }, 5);
@@ -153,6 +156,8 @@ window.onkeydown = ( event ) => {
     
             // 2초 후 숨기기
             hideTimer = setTimeout(() => {
+                // ssande 값 반전
+                ssande = !ssande;
                 message.style.display = "none";
             }, 2000);
     
@@ -168,6 +173,30 @@ window.onkeyup = (event) => {
             clearInterval(interval);
             interval = null;
     }
+}
+
+function startShake() {
+
+    setInterval(() => {
+
+        let shakeOffset = 0;
+
+        if (ssande) {
+            shakeTime += 4.0;
+            shakeOffset = Math.sin(shakeTime) * 32;
+        }
+
+        let shakeDelta = shakeOffset - lastShakeOffset;
+
+        Body.setPosition(currentBody, {
+            x: currentBody.position.x + shakeDelta,
+            y: currentBody.position.y
+        });
+
+        lastShakeOffset = shakeOffset;
+
+    }, 5);
+
 }
 
 // 이벤트 사용
@@ -221,3 +250,4 @@ Events.on(engine, "collisionStart", (event) => {
 })
 
 addFruit();
+startShake();
