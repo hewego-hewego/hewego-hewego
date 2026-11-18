@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #centerMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+    
+            font-size: 40px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-align: center;
+    
+            display: none;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
     <script src="/suika/matter.js"></script>
     <script type="module" src="/suika/main.js"></script>
     <script type="module" src="/suika/fruits.js"></script>
+    <div id="centerMessage">
+        싼데비슷한!!!!!<br>
+        가장 기초적이야!!!!!
+    </div>
 </body>
 </html>
